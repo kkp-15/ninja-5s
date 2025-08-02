@@ -98,7 +98,6 @@
       text-decoration: none;
     }
 
-    /* 紙吹雪エフェクト */
     .confetti {
       position: fixed;
       top: -10px;
@@ -115,7 +114,6 @@
       }
     }
 
-    /* PC向けスタイル調整 */
     @media screen and (min-width: 768px) {
       body { padding: 2em 4em; }
       h1 { font-size: 2em; }
@@ -128,28 +126,27 @@
   <h1>5秒ぴったりチャレンジ</h1>
   <div id="timer">0.00</div>
 
-  <!-- ボタン表示（切り替え用） -->
+  <!-- スタート・ストップ切り替えボタン -->
   <button id="startBtn" class="btn">スタート</button>
   <button id="stopBtn" class="btn hidden">ストップ</button>
 
-  <!-- 結果・キャラクターコメント -->
+  <!-- 結果とキャラクターコメント -->
   <div id="result"></div>
   <div id="character"></div>
 
-  <!-- シェアボタン（X） -->
+  <!-- シェアリンク表示 -->
   <div id="shareArea" style="display:none;">
     <a id="shareBtn" href="#" target="_blank">🎯 結果をXでシェア！</a>
   </div>
 
-  <!-- フッターリンク -->
+  <!-- フッター -->
   <div id="footer">
     X <a href="https://x.com/kkp_webninja" target="_blank">@kkp_webninja</a><br>
     🏯 <a href="https://kkpwebninja.com" target="_blank">web忍者の本丸</a>
   </div>
 
-  <!-- JavaScript機能本体 -->
+  <!-- JavaScript本体 -->
   <script>
-    // 初期化・変数宣言
     let startTime = 0;
     let timerInterval = null;
     let isRunning = false;
@@ -163,12 +160,12 @@
     const shareArea = document.getElementById('shareArea');
     const shareBtn = document.getElementById('shareBtn');
 
-    // ミリ秒を0.00秒表示に整形する関数
+    // 表示形式を 0.00 にする
     function formatTime(ms) {
       return (ms / 1000).toFixed(2);
     }
 
-    // ピッタリ演出：紙吹雪生成
+    // 紙吹雪生成
     function createConfetti() {
       for (let i = 0; i < 50; i++) {
         const confetti = document.createElement("div");
@@ -192,7 +189,7 @@
       startBtn.classList.add("hidden");
       stopBtn.classList.remove("hidden");
 
-      // タイマー更新（30ms間隔）
+      // タイマー更新
       timerInterval = setInterval(() => {
         const elapsed = performance.now() - startTime;
 
@@ -205,19 +202,18 @@
           startBtn.classList.remove("hidden");
           resultDisplay.textContent = "⏱ タイムアップ！";
           characterDisplay.textContent = "「修行の道はまだ遠いぞ…」";
-
           const tweet = `【5秒チャレンジ】\n⏱ タイムアップ！\n10秒オーバーで失敗…！\nあなたは止められる？👇\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ\n#集中力\n@kkp_webninja`;
           shareBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
           shareArea.style.display = "block";
           return;
         }
 
-        // 2秒までは表示、それ以降は？？？
+        // 2秒超えたら？？？で非表示
         timerDisplay.textContent = elapsed >= 2000 ? "？？？" : formatTime(elapsed);
       }, 30);
     }
 
-    // ストップ処理（手動で押されたとき）
+    // ストップ処理
     function stopTimer() {
       if (!isRunning) return;
       isRunning = false;
@@ -231,14 +227,15 @@
 
       const seconds = formatTime(elapsed);
       const diff = Math.abs(elapsed - 5000);
+      const diffSec = (diff / 1000).toFixed(2);
       timerDisplay.textContent = seconds;
 
-      let resultText = `誤差：${(diff / 1000).toFixed(2)}秒`;
+      // 判定処理（誤差表示と評価）
+      let resultText = `誤差：${diffSec}秒`;
       let characterMsg = "";
       let title = "";
 
-      // 判定ごとのコメントと演出
-      if (diff < 0.03) {
+      if (diffSec === "0.00") {
         resultText += " 🎯 ピッタリ！";
         characterMsg = "「お主、5秒の神か…！」";
         title = "🎯 5秒マスター現る！";
@@ -265,7 +262,7 @@
       shareArea.style.display = "block";
     }
 
-    // ボタンにイベント登録
+    // ボタンにイベント追加
     startBtn.addEventListener('click', startTimer);
     stopBtn.addEventListener('click', stopTimer);
   </script>
