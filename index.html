@@ -10,8 +10,6 @@
   <meta property="og:image" content="https://5sec.kkpwebninja.com/card.png" />
   <meta property="og:url" content="https://5sec.kkpwebninja.com" />
   <meta property="og:type" content="website" />
-
-  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-2LM85GJN0L"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -19,8 +17,6 @@
     gtag('js', new Date());
     gtag('config', 'G-2LM85GJN0L');
   </script>
-
-  <!-- CSSスタイル -->
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -30,18 +26,8 @@
       margin: 0;
       padding: 1em;
     }
-
-    h1 {
-      font-size: 1.6em;
-      margin-bottom: 0.8em;
-    }
-
-    #timer {
-      font-size: 3em;
-      font-weight: bold;
-      margin: 0.5em 0;
-    }
-
+    h1 { font-size: 1.6em; margin-bottom: 0.8em; }
+    #timer { font-size: 3em; font-weight: bold; margin: 0.5em 0; }
     .btn {
       font-size: 1.2em;
       padding: 0.6em 1.5em;
@@ -53,30 +39,11 @@
       transition: background 0.3s;
       margin: 0.5em;
     }
-
-    .btn:hover {
-      background: #f57c00;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    #result {
-      font-size: 1.2em;
-      margin-top: 0.8em;
-    }
-
-    #character {
-      font-size: 1em;
-      margin-top: 0.5em;
-      color: #444;
-    }
-
-    #shareArea {
-      margin-top: 1.2em;
-    }
-
+    .btn:hover { background: #f57c00; }
+    .hidden { display: none; }
+    #result { font-size: 1.2em; margin-top: 0.8em; }
+    #character { font-size: 1em; margin-top: 0.5em; color: #444; }
+    #shareArea { margin-top: 1.2em; }
     #shareArea a {
       display: inline-block;
       background: #1da1f2;
@@ -86,18 +53,15 @@
       text-decoration: none;
       font-weight: bold;
     }
-
     #footer {
       margin-top: 2em;
       font-size: 0.85em;
       color: #555;
     }
-
     #footer a {
       color: #0000ee;
       text-decoration: none;
     }
-
     .confetti {
       position: fixed;
       top: -10px;
@@ -106,14 +70,12 @@
       background-color: red;
       animation: fall 3s linear forwards;
     }
-
     @keyframes fall {
       to {
         transform: translateY(100vh) rotate(720deg);
         opacity: 0;
       }
     }
-
     @media screen and (min-width: 768px) {
       body { padding: 2em 4em; }
       h1 { font-size: 2em; }
@@ -122,36 +84,23 @@
   </style>
 </head>
 <body>
-  <!-- タイトルとタイマー表示 -->
   <h1>5秒ぴったりチャレンジ</h1>
   <div id="timer">0.00</div>
-
-  <!-- スタート・ストップ切り替えボタン -->
   <button id="startBtn" class="btn">スタート</button>
   <button id="stopBtn" class="btn hidden">ストップ</button>
-
-  <!-- 結果とキャラクターコメント -->
   <div id="result"></div>
   <div id="character"></div>
-
-  <!-- シェアリンク表示 -->
   <div id="shareArea" style="display:none;">
     <a id="shareBtn" href="#" target="_blank">🎯 結果をXでシェア！</a>
   </div>
-
-  <!-- フッター -->
   <div id="footer">
     X <a href="https://x.com/kkp_webninja" target="_blank">@kkp_webninja</a><br>
     🏯 <a href="https://kkpwebninja.com" target="_blank">web忍者の本丸</a>
   </div>
-
-  <!-- JavaScript本体 -->
   <script>
     let startTime = 0;
     let timerInterval = null;
     let isRunning = false;
-
-    // DOM取得
     const timerDisplay = document.getElementById('timer');
     const resultDisplay = document.getElementById('result');
     const characterDisplay = document.getElementById('character');
@@ -160,12 +109,10 @@
     const shareArea = document.getElementById('shareArea');
     const shareBtn = document.getElementById('shareBtn');
 
-    // 表示形式を 0.00 にする
     function formatTime(ms) {
       return (ms / 1000).toFixed(2);
     }
 
-    // 紙吹雪生成
     function createConfetti() {
       for (let i = 0; i < 50; i++) {
         const confetti = document.createElement("div");
@@ -177,7 +124,6 @@
       }
     }
 
-    // スタート処理
     function startTimer() {
       startTime = performance.now();
       isRunning = true;
@@ -185,15 +131,11 @@
       resultDisplay.textContent = "";
       characterDisplay.textContent = "";
       shareArea.style.display = "none";
-
       startBtn.classList.add("hidden");
       stopBtn.classList.remove("hidden");
 
-      // タイマー更新
       timerInterval = setInterval(() => {
         const elapsed = performance.now() - startTime;
-
-        // 10秒を超えたら強制終了
         if (elapsed >= 10000) {
           clearInterval(timerInterval);
           isRunning = false;
@@ -202,49 +144,42 @@
           startBtn.classList.remove("hidden");
           resultDisplay.textContent = "⏱ タイムアップ！";
           characterDisplay.textContent = "「修行の道はまだ遠いぞ…」";
-          const tweet = `【5秒チャレンジ】\n⏱ タイムアップ！\n10秒オーバーで失敗…！\nあなたは止められる？👇\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ\n#集中力\n@kkp_webninja`;
+          const tweet = `【5秒チャレンジ】\n⏱ タイムアップ！\n10秒オーバーで失敗…！\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ\n#集中力\n@kkp_webninja`;
           shareBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
           shareArea.style.display = "block";
           return;
         }
-
-        // 2秒超えたら？？？で非表示
         timerDisplay.textContent = elapsed >= 2000 ? "？？？" : formatTime(elapsed);
       }, 30);
     }
 
-    // ストップ処理
     function stopTimer() {
       if (!isRunning) return;
       isRunning = false;
-
       const endTime = performance.now();
       const elapsed = endTime - startTime;
       clearInterval(timerInterval);
-
       stopBtn.classList.add("hidden");
       startBtn.classList.remove("hidden");
-
       const seconds = formatTime(elapsed);
       const diff = Math.abs(elapsed - 5000);
-      const diffSec = (diff / 1000).toFixed(2);
+      const diffSec = diff / 1000;
       timerDisplay.textContent = seconds;
 
-      // 判定処理（誤差表示と評価）
-      let resultText = `誤差：${diffSec}秒`;
+      let resultText = `誤差：${diffSec.toFixed(2)}秒`;
       let characterMsg = "";
       let title = "";
 
-      if (diffSec === "0.00") {
+      if (diff === 0) {
         resultText += " 🎯 ピッタリ！";
         characterMsg = "「お主、5秒の神か…！」";
         title = "🎯 5秒マスター現る！";
         createConfetti();
-      } else if (diff < 0.15) {
+      } else if (diffSec < 0.15) {
         resultText += " 😊 ニアピン！";
         characterMsg = "「なかなかやるのぅ！」";
         title = "いい線いってる！";
-      } else if (diff < 0.3) {
+      } else if (diffSec < 0.3) {
         resultText += " 😅 おしい〜！";
         characterMsg = "「もう一息じゃ！」";
         title = "おしい記録！";
@@ -257,12 +192,11 @@
       resultDisplay.textContent = resultText;
       characterDisplay.textContent = characterMsg;
 
-      const tweet = `【5秒チャレンジ】\n${title}\n記録：${seconds}秒\n${resultText}\nあなたも挑戦👇\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ\n#集中力\n@kkp_webninja`;
+      const tweet = `【5秒チャレンジ】\n${title}\n記録：${seconds}秒\n${resultText}\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ\n#集中力\n@kkp_webninja`;
       shareBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
       shareArea.style.display = "block";
     }
 
-    // ボタンにイベント追加
     startBtn.addEventListener('click', startTimer);
     stopBtn.addEventListener('click', stopTimer);
   </script>
