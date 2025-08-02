@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>5秒ぴったりチャレンジ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="5秒ぴったりで止められるか！？簡単で中毒性のあるタイマーゲーム" />
+  <meta property="og:title" content="5秒ぴったりチャレンジ" />
+  <meta property="og:description" content="スタート→ストップ！5秒00で止められるか？" />
+  <meta property="og:image" content="https://kkpwebninja.com/card.png" />
+  <meta property="og:url" content="https://kkpwebninja.com/" />
+  <meta property="og:type" content="website" />
+
+  <!-- ✅ Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2LM85GJN0L"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2LM85GJN0L');
+  </script>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #fff8e1;
+      padding: 2em;
+    }
+    h1 {
+      font-size: 1.8em;
+    }
+    #timer {
+      font-size: 3em;
+      margin: 1em 0;
+    }
+    button {
+      font-size: 1.2em;
+      padding: 0.6em 1.5em;
+      margin: 0.5em;
+    }
+    #result {
+      font-size: 1.4em;
+      margin-top: 1em;
+    }
+    #character {
+      font-size: 1.2em;
+      margin-top: 1em;
+      color: #444;
+    }
+    #shareArea {
+      margin-top: 1.5em;
+    }
+    #shareArea a {
+      display: inline-block;
+      background: #1da1f2;
+      color: white;
+      padding: 0.6em 1.2em;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    #footer {
+      margin-top: 3em;
+      font-size: 0.9em;
+      color: #555;
+    }
+    #footer a {
+      color: #0000ee;
+      text-decoration: none;
+    }
+    /* 🎉 紙吹雪 */
+    .confetti {
+      position: fixed;
+      top: -10px;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      animation: fall 3s linear forwards;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>5秒ぴったりチャレンジ</h1>
+  <div id="timer">0.00</div>
+  <button id="startBtn">スタート</button>
+  <button id="stopBtn" disabled>ストップ</button>
+  <div id="result"></div>
+  <div id="character"></div>
+  <div id="shareArea" style="display:none;">
+    <a id="shareBtn" href="#" target="_blank">🎯 結果をXでシェア！</a>
+  </div>
+
+  <div id="footer">
+    X <a href="https://x.com/kkp_webninja" target="_blank">@kkp_webninja</a> <br>
+    🏯 <a href="https://kkpwebninja.com" target="_blank">web忍者の本丸</a><br>
+    🔁 <a href="" onclick="location.reload(); return false;">もう一度挑戦</a>
+  </div>
+
+  <script>
+    let startTime, timerInterval;
+    let isRunning = false;
+
+    const timerDisplay = document.getElementById('timer');
+    const resultDisplay = document.getElementById('result');
+    const characterDisplay = document.getElementById('character');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const shareArea = document.getElementById('shareArea');
+    const shareBtn = document.getElementById('shareBtn');
+
+    function formatTime(ms) {
+      return (ms / 1000).toFixed(2);
+    }
+
+    function startTimer() {
+      startTime = performance.now();
+      isRunning = true;
+      resultDisplay.textContent = "";
+      characterDisplay.textContent = "";
+      shareArea.style.display = "none";
+      timerDisplay.textContent = "0.00";
+      stopBtn.disabled = false;
+      startBtn.disabled = true;
+
+      timerInterval = setInterval(() => {
+        const elapsed = performance.now() - startTime;
+        if (elapsed >= 2000) {
+          timerDisplay.textContent = "？？？";
+        } else {
+          timerDisplay.textContent = formatTime(elapsed);
+        }
+      }, 50);
+    }
+
+    function createConfetti() {
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.backgroundColor = ["#f44336", "#ffeb3b", "#4caf50", "#2196f3"][Math.floor(Math.random() * 4)];
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3000);
+      }
+    }
+
+    function stopTimer() {
+      if (!isRunning) return;
+      const endTime = performance.now();
+      const elapsed = endTime - startTime;
+      clearInterval(timerInterval);
+      stopBtn.disabled = true;
+      startBtn.disabled = false;
+      isRunning = false;
+
+      const seconds = formatTime(elapsed);
+      const diff = Math.abs(elapsed - 5000);
+      timerDisplay.textContent = seconds;
+
+      let resultText = `誤差：${(diff / 1000).toFixed(2)}秒`;
+      let characterMsg = "";
+      let title = "";
+
+      if (diff < 0.03) {
+        resultText += " 🎯 ピッタリ！";
+        characterMsg = "「お主、5秒の神か…！」";
+        title = "🎯 5秒マスター現る！";
+        createConfetti();
+      } else if (diff < 0.15) {
+        resultText += " 😊 ニアピン！";
+        characterMsg = "「なかなかやるのぅ！」";
+        title = "いい線いってる！";
+      } else if (diff < 0.3) {
+        resultText += " 😅 おしい〜！";
+        characterMsg = "「もう一息じゃ！」";
+        title = "おしい記録！";
+      } else {
+        resultText += " 😵‍💫 また挑戦してね！";
+        characterMsg = "「修行が足りぬようじゃ」";
+        title = "リベンジ待ってる！";
+      }
+
+      resultDisplay.textContent = resultText;
+      characterDisplay.textContent = characterMsg;
+
+      const tweet = `【5秒チャレンジ】\n${title}\n記録：${seconds}秒\n${resultText}\nあなたも挑戦👇\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ #集中力ゲーム\n@kkp_webninja`;
+      shareBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
+      shareArea.style.display = "block";
+    }
+
+    startBtn.addEventListener('click', startTimer);
+    stopBtn.addEventListener('click', stopTimer);
+  </script>
+</body>
+</html>
