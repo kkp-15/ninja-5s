@@ -8,7 +8,7 @@
   <meta property="og:title" content="5秒ぴったりチャレンジ" />
   <meta property="og:description" content="スタート→ストップ！5秒00で止められるか？" />
   <meta property="og:image" content="https://kkpwebninja.com/card.png" />
-  <meta property="og:url" content="https://kkpwebninja.com/" />
+  <meta property="og:url" content="https://5sec.kkpwebninja.com" />
   <meta property="og:type" content="website" />
 
   <!-- ✅ Google Analytics -->
@@ -177,25 +177,4 @@
         characterMsg = "「なかなかやるのぅ！」";
         title = "いい線いってる！";
       } else if (diff < 0.3) {
-        resultText += " 😅 おしい〜！";
-        characterMsg = "「もう一息じゃ！」";
-        title = "おしい記録！";
-      } else {
-        resultText += " 😵‍💫 また挑戦してね！";
-        characterMsg = "「修行が足りぬようじゃ」";
-        title = "リベンジ待ってる！";
-      }
-
-      resultDisplay.textContent = resultText;
-      characterDisplay.textContent = characterMsg;
-
-      const tweet = `【5秒チャレンジ】\n${title}\n記録：${seconds}秒\n${resultText}\nあなたも挑戦👇\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ #集中力ゲーム\n@kkp_webninja`;
-      shareBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
-      shareArea.style.display = "block";
-    }
-
-    startBtn.addEventListener('click', startTimer);
-    stopBtn.addEventListener('click', stopTimer);
-  </script>
-</body>
-</html>
+        re
