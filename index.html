@@ -22,35 +22,61 @@
 
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       text-align: center;
-      background: #fff8e1;
+      background: linear-gradient(145deg, #fef6e4, #fff8dc);
+      color: #333;
+      margin: 0;
       padding: 2em;
     }
+
     h1 {
-      font-size: 1.8em;
+      font-size: 2em;
+      margin-bottom: 1em;
     }
+
     #timer {
-      font-size: 3em;
+      font-size: 3.5em;
+      font-weight: bold;
       margin: 1em 0;
+      color: #333;
     }
-    button {
-      font-size: 1.2em;
-      padding: 0.6em 1.5em;
-      margin: 0.5em;
+
+    .btn {
+      font-size: 1.5em;
+      padding: 0.7em 2em;
+      border: none;
+      border-radius: 10px;
+      background: #ff9800;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
     }
+
+    .btn:hover {
+      background: #f57c00;
+    }
+
+    .hidden {
+      display: none;
+    }
+
     #result {
       font-size: 1.4em;
       margin-top: 1em;
+      transition: opacity 0.5s ease;
     }
+
     #character {
       font-size: 1.2em;
-      margin-top: 1em;
+      margin-top: 0.5em;
       color: #444;
     }
+
     #shareArea {
       margin-top: 1.5em;
     }
+
     #shareArea a {
       display: inline-block;
       background: #1da1f2;
@@ -60,15 +86,18 @@
       text-decoration: none;
       font-weight: bold;
     }
+
     #footer {
       margin-top: 3em;
       font-size: 0.9em;
       color: #555;
     }
+
     #footer a {
       color: #0000ee;
       text-decoration: none;
     }
+
     /* 🎉 紙吹雪 */
     .confetti {
       position: fixed;
@@ -78,6 +107,7 @@
       background-color: red;
       animation: fall 3s linear forwards;
     }
+
     @keyframes fall {
       to {
         transform: translateY(100vh) rotate(720deg);
@@ -89,10 +119,14 @@
 <body>
   <h1>5秒ぴったりチャレンジ</h1>
   <div id="timer">0.00</div>
-  <button id="startBtn">スタート</button>
-  <button id="stopBtn" disabled>ストップ</button>
+
+  <!-- ボタンエリア（1つずつ表示） -->
+  <button id="startBtn" class="btn">スタート</button>
+  <button id="stopBtn" class="btn hidden">ストップ</button>
+
   <div id="result"></div>
   <div id="character"></div>
+
   <div id="shareArea" style="display:none;">
     <a id="shareBtn" href="#" target="_blank">🎯 結果をXでシェア！</a>
   </div>
@@ -104,7 +138,8 @@
   </div>
 
   <script>
-    let startTime, timerInterval;
+    let startTime = 0;
+    let timerInterval = null;
     let isRunning = false;
 
     const timerDisplay = document.getElementById('timer');
@@ -119,26 +154,6 @@
       return (ms / 1000).toFixed(2);
     }
 
-    function startTimer() {
-      startTime = performance.now();
-      isRunning = true;
-      resultDisplay.textContent = "";
-      characterDisplay.textContent = "";
-      shareArea.style.display = "none";
-      timerDisplay.textContent = "0.00";
-      stopBtn.disabled = false;
-      startBtn.disabled = true;
-
-      timerInterval = setInterval(() => {
-        const elapsed = performance.now() - startTime;
-        if (elapsed >= 2000) {
-          timerDisplay.textContent = "？？？";
-        } else {
-          timerDisplay.textContent = formatTime(elapsed);
-        }
-      }, 50);
-    }
-
     function createConfetti() {
       for (let i = 0; i < 50; i++) {
         const confetti = document.createElement("div");
@@ -150,14 +165,35 @@
       }
     }
 
+    function startTimer() {
+      startTime = performance.now();
+      isRunning = true;
+      resultDisplay.textContent = "";
+      characterDisplay.textContent = "";
+      shareArea.style.display = "none";
+      timerDisplay.textContent = "0.00";
+      startBtn.classList.add("hidden");
+      stopBtn.classList.remove("hidden");
+
+      timerInterval = setInterval(() => {
+        const elapsed = performance.now() - startTime;
+        if (elapsed >= 2000) {
+          timerDisplay.textContent = "？？？";
+        } else {
+          timerDisplay.textContent = formatTime(elapsed);
+        }
+      }, 30);
+    }
+
     function stopTimer() {
       if (!isRunning) return;
+      isRunning = false;
       const endTime = performance.now();
       const elapsed = endTime - startTime;
       clearInterval(timerInterval);
-      stopBtn.disabled = true;
-      startBtn.disabled = false;
-      isRunning = false;
+
+      stopBtn.classList.add("hidden");
+      startBtn.classList.remove("hidden");
 
       const seconds = formatTime(elapsed);
       const diff = Math.abs(elapsed - 5000);
@@ -177,4 +213,25 @@
         characterMsg = "「なかなかやるのぅ！」";
         title = "いい線いってる！";
       } else if (diff < 0.3) {
-        re
+        resultText += " 😅 おしい〜！";
+        characterMsg = "「もう一息じゃ！」";
+        title = "おしい記録！";
+      } else {
+        resultText += " 😵‍💫 また挑戦してね！";
+        characterMsg = "「修行が足りぬようじゃ」";
+        title = "リベンジ待ってる！";
+      }
+
+      resultDisplay.textContent = resultText;
+      characterDisplay.textContent = characterMsg;
+
+      const tweet = `【5秒チャレンジ】\n${title}\n記録：${seconds}秒\n${resultText}\nあなたも挑戦👇\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ #集中力ゲーム\n@kkp_webninja`;
+      shareBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
+      shareArea.style.display = "block";
+    }
+
+    startBtn.addEventListener('click', startTimer);
+    stopBtn.addEventListener('click', stopTimer);
+  </script>
+</body>
+</html>
