@@ -163,23 +163,23 @@
       startBtn.classList.remove("hidden");
       const seconds = formatTime(elapsed);
       const diff = Math.abs(elapsed - 5000);
-      const diffSec = diff / 1000;
+      const diffSec = parseFloat(seconds) - 5.00;
       timerDisplay.textContent = seconds;
 
-      let resultText = `誤差：${diffSec.toFixed(2)}秒`;
+      let resultText = `誤差：${Math.abs(diffSec).toFixed(2)}秒`;
       let characterMsg = "";
       let title = "";
 
-      if (diff === 0) {
+      if (seconds === "5.00") {
         resultText += " 🎯 ピッタリ！";
         characterMsg = "「お主、5秒の神か…！」";
         title = "🎯 5秒マスター現る！";
         createConfetti();
-      } else if (diffSec < 0.15) {
+      } else if (Math.abs(diffSec) < 0.15) {
         resultText += " 😊 ニアピン！";
         characterMsg = "「なかなかやるのぅ！」";
         title = "いい線いってる！";
-      } else if (diffSec < 0.3) {
+      } else if (Math.abs(diffSec) < 0.3) {
         resultText += " 😅 おしい〜！";
         characterMsg = "「もう一息じゃ！」";
         title = "おしい記録！";
