@@ -206,7 +206,7 @@
           resultDisplay.textContent = "⏱ タイムアップ！";
           characterDisplay.textContent = "「修行の道はまだ遠いぞ…」";
 
-          const tweet = `【5秒チャレンジ】\n⏱ タイムアップ！\n10秒オーバーで失敗…！\nあなたは止められる？👇\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ #集中力ゲーム\n@kkp_webninja`;
+          const tweet = `【5秒チャレンジ】\n⏱ タイムアップ！\n10秒オーバーで失敗…！\nあなたは止められる？👇\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ\n#集中力\n@kkp_webninja`;
           shareBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
           shareArea.style.display = "block";
           return;
@@ -260,7 +260,7 @@
       resultDisplay.textContent = resultText;
       characterDisplay.textContent = characterMsg;
 
-      const tweet = `【5秒チャレンジ】\n${title}\n記録：${seconds}秒\n${resultText}\nあなたも挑戦👇\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ #集中力ゲーム\n@kkp_webninja`;
+      const tweet = `【5秒チャレンジ】\n${title}\n記録：${seconds}秒\n${resultText}\nあなたも挑戦👇\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ\n#集中力\n@kkp_webninja`;
       shareBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
       shareArea.style.display = "block";
     }
