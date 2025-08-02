@@ -1,56 +1,65 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <!-- メタ情報やSEO・SNS設定 -->
   <meta charset="UTF-8">
   <title>5秒ぴったりチャレンジ</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <meta name="description" content="5秒ぴったりで止められるか！？簡単で中毒性のあるタイマーゲーム" />
+
+  <!-- SNSカード（OGP）設定 -->
   <meta property="og:title" content="5秒ぴったりチャレンジ" />
   <meta property="og:description" content="スタート→ストップ！5秒00で止められるか？" />
   <meta property="og:image" content="https://kkpwebninja.com/card.png" />
   <meta property="og:url" content="https://5sec.kkpwebninja.com" />
   <meta property="og:type" content="website" />
 
-  <!-- ✅ Google Analytics -->
+  <!-- Googleアナリティクス設定 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-2LM85GJN0L"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-2LM85GJN0L');
   </script>
 
+  <!-- CSSスタイル設定 -->
   <style>
+    /* 共通全体 */
     body {
       font-family: 'Segoe UI', sans-serif;
       text-align: center;
       background: linear-gradient(145deg, #fef6e4, #fff8dc);
       color: #333;
       margin: 0;
-      padding: 2em;
+      padding: 1em;
     }
 
+    /* タイトル */
     h1 {
-      font-size: 2em;
-      margin-bottom: 1em;
+      font-size: 1.6em;
+      margin-bottom: 0.8em;
     }
 
+    /* タイマー表示 */
     #timer {
-      font-size: 3.5em;
+      font-size: 3em;
       font-weight: bold;
-      margin: 1em 0;
+      margin: 0.5em 0;
       color: #333;
     }
 
+    /* ボタン共通スタイル */
     .btn {
-      font-size: 1.5em;
-      padding: 0.7em 2em;
+      font-size: 1.2em;
+      padding: 0.6em 1.5em;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       background: #ff9800;
       color: white;
       cursor: pointer;
       transition: background 0.3s;
+      margin: 0.5em;
     }
 
     .btn:hover {
@@ -61,20 +70,22 @@
       display: none;
     }
 
+    /* 結果表示エリア */
     #result {
-      font-size: 1.4em;
-      margin-top: 1em;
-      transition: opacity 0.5s ease;
+      font-size: 1.2em;
+      margin-top: 0.8em;
     }
 
+    /* キャラコメント */
     #character {
-      font-size: 1.2em;
+      font-size: 1em;
       margin-top: 0.5em;
       color: #444;
     }
 
+    /* シェアリンクエリア */
     #shareArea {
-      margin-top: 1.5em;
+      margin-top: 1.2em;
     }
 
     #shareArea a {
@@ -87,9 +98,10 @@
       font-weight: bold;
     }
 
+    /* フッター（リンク） */
     #footer {
-      margin-top: 3em;
-      font-size: 0.9em;
+      margin-top: 2em;
+      font-size: 0.85em;
       color: #555;
     }
 
@@ -98,7 +110,7 @@
       text-decoration: none;
     }
 
-    /* 🎉 紙吹雪 */
+    /* 紙吹雪アニメーション */
     .confetti {
       position: fixed;
       top: -10px;
@@ -114,34 +126,55 @@
         opacity: 0;
       }
     }
+
+    /* PC・タブレットで拡張 */
+    @media screen and (min-width: 768px) {
+      body {
+        padding: 2em 4em;
+      }
+      h1 {
+        font-size: 2em;
+      }
+      #timer {
+        font-size: 4em;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- タイトル -->
   <h1>5秒ぴったりチャレンジ</h1>
+
+  <!-- タイマー表示 -->
   <div id="timer">0.00</div>
 
-  <!-- ボタンエリア（1つずつ表示） -->
+  <!-- スタート／ストップボタン（表示切替） -->
   <button id="startBtn" class="btn">スタート</button>
   <button id="stopBtn" class="btn hidden">ストップ</button>
 
+  <!-- 結果表示・コメント -->
   <div id="result"></div>
   <div id="character"></div>
 
+  <!-- シェアリンク（X） -->
   <div id="shareArea" style="display:none;">
     <a id="shareBtn" href="#" target="_blank">🎯 結果をXでシェア！</a>
   </div>
 
+  <!-- フッター -->
   <div id="footer">
     X <a href="https://x.com/kkp_webninja" target="_blank">@kkp_webninja</a> <br>
-    🏯 <a href="https://kkpwebninja.com" target="_blank">web忍者の本丸</a><br>
-    🔁 <a href="" onclick="location.reload(); return false;">もう一度挑戦</a>
+    🏯 <a href="https://kkpwebninja.com" target="_blank">web忍者の本丸</a>
   </div>
 
+  <!-- JavaScript処理（タイマー・演出・SNS） -->
   <script>
+    // タイマー関連の変数
     let startTime = 0;
     let timerInterval = null;
     let isRunning = false;
 
+    // DOM取得
     const timerDisplay = document.getElementById('timer');
     const resultDisplay = document.getElementById('result');
     const characterDisplay = document.getElementById('character');
@@ -150,10 +183,12 @@
     const shareArea = document.getElementById('shareArea');
     const shareBtn = document.getElementById('shareBtn');
 
+    // ミリ秒を"0.00"形式に変換する関数
     function formatTime(ms) {
       return (ms / 1000).toFixed(2);
     }
 
+    // ピッタリ成功時に紙吹雪を表示する関数
     function createConfetti() {
       for (let i = 0; i < 50; i++) {
         const confetti = document.createElement("div");
@@ -165,36 +200,42 @@
       }
     }
 
+    // スタートボタンが押された時の処理
     function startTimer() {
-      startTime = performance.now();
+      startTime = performance.now(); // 開始時刻を記録
       isRunning = true;
+
+      // 初期化表示
       resultDisplay.textContent = "";
       characterDisplay.textContent = "";
       shareArea.style.display = "none";
       timerDisplay.textContent = "0.00";
+
+      // ボタン切り替え
       startBtn.classList.add("hidden");
       stopBtn.classList.remove("hidden");
 
+      // タイマー更新処理（50msごと）
       timerInterval = setInterval(() => {
         const elapsed = performance.now() - startTime;
-        if (elapsed >= 2000) {
-          timerDisplay.textContent = "？？？";
-        } else {
-          timerDisplay.textContent = formatTime(elapsed);
-        }
+        timerDisplay.textContent = elapsed >= 2000 ? "？？？" : formatTime(elapsed);
       }, 30);
     }
 
+    // ストップボタンが押された時の処理
     function stopTimer() {
       if (!isRunning) return;
       isRunning = false;
+
       const endTime = performance.now();
       const elapsed = endTime - startTime;
       clearInterval(timerInterval);
 
+      // ボタン切り替え
       stopBtn.classList.add("hidden");
       startBtn.classList.remove("hidden");
 
+      // 結果を表示
       const seconds = formatTime(elapsed);
       const diff = Math.abs(elapsed - 5000);
       timerDisplay.textContent = seconds;
@@ -203,6 +244,7 @@
       let characterMsg = "";
       let title = "";
 
+      // 誤差に応じて判定・メッセージ・演出
       if (diff < 0.03) {
         resultText += " 🎯 ピッタリ！";
         characterMsg = "「お主、5秒の神か…！」";
@@ -222,14 +264,17 @@
         title = "リベンジ待ってる！";
       }
 
+      // 表示に反映
       resultDisplay.textContent = resultText;
       characterDisplay.textContent = characterMsg;
 
+      // シェア用のツイート文を生成
       const tweet = `【5秒チャレンジ】\n${title}\n記録：${seconds}秒\n${resultText}\nあなたも挑戦👇\nhttps://5sec.kkpwebninja.com\n\n#5秒チャレンジ #集中力ゲーム\n@kkp_webninja`;
       shareBtn.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
       shareArea.style.display = "block";
     }
 
+    // イベント登録
     startBtn.addEventListener('click', startTimer);
     stopBtn.addEventListener('click', stopTimer);
   </script>
